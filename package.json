@@ -1,6 +1,6 @@
 {
   "name": "express-rest-file-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CRUD operations with files storing in-memory or disk",
   "keywords": [
     "node",
