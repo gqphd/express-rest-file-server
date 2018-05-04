@@ -25,7 +25,7 @@
     "node": ">=6"
   },
   "main": "index.js",
-  "bin": "index.js",
+  "bin": "./bin/index.js",
   "scripts": {
     "prepublishOnly": "pkg-ok",
     "start": "node index.js",
