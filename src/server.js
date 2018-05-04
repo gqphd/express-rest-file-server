@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const multer = require('multer');
 const bodyParser = require('body-parser');
@@ -26,6 +27,12 @@ module.exports = {
     let storage;
     if (options.storage.type === 'disk') {
       console.log('📥  Using disk storage', (options.storage.path || '/tmp'));
+
+      if (options.storage.path && !fs.existsSync(options.storage.pathh)) {
+        console.error('🔥 ', options.storage.path, 'does not exist');
+        throw new Error(`${options.storage.path} does not exist`);
+      }
+
       storage = multer.diskStorage({
         destination(req, file, cb) {
           cb(null, (options.storage.path || '/tmp'));
@@ -81,7 +88,7 @@ module.exports = {
       const result = fileService.writeFileChunk(
         request.params.filename,
         request.file.buffer,
-        request.body[options.chunkNumber || 'chunknumber'],
+        request.body[options.chunkNumber || 'chunknumber']
       );
       response.status(result.status).send(result.data);
     });
@@ -89,7 +96,7 @@ module.exports = {
     app.post('/assemble/:filename', (request, response) => {
       const result = fileService.assembleFileChunks(
         request.params.filename,
-        request.body[options.totalSize || 'totalsize'],
+        request.body[options.totalSize || 'totalsize']
       );
       response.status(result.status).send(result.data);
     });
