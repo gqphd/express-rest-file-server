@@ -1,14 +1,37 @@
 {
   "name": "express-rest-file-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "CRUD operations with files storing in-memory or disk",
+  "keywords": [
+    "node",
+    "express",
+    "crud",
+    "rest",
+    "multer",
+    "files",
+    "server"
+  ],
+  "author": "Francisco Calle Moreno",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:bitIO/express-rest-file-server.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitIO/express-rest-file-server/issues"
+  },
+  "homepage": "https://github.com/bitIO/express-rest-file-server/",
+  "engines": {
+    "node": ">=6"
+  },
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "prepublishOnly": "pkg-ok",
+    "start": "node index.js",
+    "start:disk": "node index.js --storageType=disk",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
@@ -18,7 +41,8 @@
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.11.0"
+    "eslint-plugin-import": "^2.11.0",
+    "pkg-ok": "^2.2.0"
   },
   "eslintConfig": {
     "extends": "airbnb-base"
