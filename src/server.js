@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const cors = require('cors');
 const multer = require('multer');
 const bodyParser = require('body-parser');
 const fileService = require('./file-service');
@@ -45,7 +46,6 @@ module.exports = {
       console.log('🙉  Using memory storage');
       storage = multer.memoryStorage();
     }
-
     const upload = multer({ storage });
 
     const app = express();
@@ -53,14 +53,7 @@ module.exports = {
       extended: true,
     }));
     app.use(bodyParser.json());
-
-
-    app.use((request, response, next) => {
-      response.header('Access-Control-Allow-Origin', '*');
-      response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-      response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-      next();
-    });
+    app.use(cors());
 
     app.get('/files/:filename/size', (request, response) => {
       const result = fileService.getFileSize(request.params.filename);
