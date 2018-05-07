@@ -1,12 +1,13 @@
-const opt = require('node-getopt').create([
+import nodegetopt from 'node-getopt';
+import server from './server';
+
+const opt = nodegetopt.create([
   ['p', 'port=PORT', 'server port (default 5000)'],
   ['', 'chunknumber=CHUNKNUMBER', "chunk number parameter (default 'chunknumber')"],
   ['', 'totalsize=TOTALSIZE', "total size parameter (default 'totalsize')"],
   ['', 'storageType=TYPE', "disk or memory (default 'memory')"],
   ['', 'storagePath=PATH', "where to save files (default '/tmp')"],
 ]).bindHelp().parseSystem().options;
-
-const server = require('./src/server.js');
 
 server.run({
   chunkNumber: opt.chunknumber,
