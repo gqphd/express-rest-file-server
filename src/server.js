@@ -1,15 +1,15 @@
-const fs = require('fs');
-const express = require('express');
-const cors = require('cors');
-const multer = require('multer');
-const bodyParser = require('body-parser');
-const fileService = require('./file-service');
-const logger = require('../log');
+import { existsSync } from 'fs';
+import express from 'express';
+import cors from 'cors';
+import multer, { diskStorage, memoryStorage } from 'multer';
+import { urlencoded, json } from 'body-parser';
+import { writeFile, getFileSize, readFile, removeFile, writeFileChunk, assembleFileChunks } from './file-service';
+import { verbose, info, error } from '../log';
 
 /* eslint-disable no-underscore-dangle */
 const saveFile = (request, response, filename) => {
-  logger.verbose('Saving file', request.file, filename);
-  const result = fileService.writeFile(request.file);
+  verbose('Saving file', request.file, filename);
+  const result = writeFile(request.file);
   if (request.query._postmessage) {
     if (request.query._postmessageid) {
       result.data._postmessageid = request.query._postmessageid;
@@ -24,18 +24,18 @@ const saveFile = (request, response, filename) => {
 };
 /* eslint-enable no-underscore-dangle  */
 
-module.exports = {
+export default {
   init(options) {
     let storage;
     if (options.storage.type === 'disk') {
-      logger.info('Using disk storage', (options.storage.path || '/tmp'));
+      info('Using disk storage', (options.storage.path || '/tmp'));
 
-      if (options.storage.path && !fs.existsSync(options.storage.pathh)) {
-        logger.error(options.storage.path, 'does not exist');
+      if (options.storage.path && !existsSync(options.storage.pathh)) {
+        error(options.storage.path, 'does not exist');
         throw new Error(`${options.storage.path} does not exist`);
       }
 
-      storage = multer.diskStorage({
+      storage = diskStorage({
         destination(req, file, cb) {
           cb(null, (options.storage.path || '/tmp'));
         },
@@ -44,29 +44,29 @@ module.exports = {
         },
       });
     } else {
-      logger.info('Using memory storage');
-      storage = multer.memoryStorage();
+      info('Using memory storage');
+      storage = memoryStorage();
     }
     const upload = multer({ storage });
 
     const app = express();
-    app.use(bodyParser.urlencoded({
+    app.use(urlencoded({
       extended: true,
     }));
-    app.use(bodyParser.json());
+    app.use(json());
     app.use(cors());
 
     app.get('/files/:filename/size', (request, response) => {
-      const result = fileService.getFileSize(request.params.filename);
+      const result = getFileSize(request.params.filename);
       response.status(result.status).send(result.data);
     });
 
     app.get('/files/:filename', (request, response) => {
-      const result = fileService.readFile(request.params.filename);
+      const result = readFile(request.params.filename);
       response.status(result.status).send(result.data);
     });
     app.delete('/files/:filename', (request, response) => {
-      const result = fileService.removeFile(request.params.filename);
+      const result = removeFile(request.params.filename);
       response.status(result.status);
     });
 
@@ -79,7 +79,7 @@ module.exports = {
     });
 
     app.post('/chunk/:filename', upload.single('file'), (request, response) => {
-      const result = fileService.writeFileChunk(
+      const result = writeFileChunk(
         request.params.filename,
         request.file.buffer,
         request.body[options.chunkNumber || 'chunknumber']
@@ -88,7 +88,7 @@ module.exports = {
     });
 
     app.post('/assemble/:filename', (request, response) => {
-      const result = fileService.assembleFileChunks(
+      const result = assembleFileChunks(
         request.params.filename,
         request.body[options.totalSize || 'totalsize']
       );
@@ -99,12 +99,13 @@ module.exports = {
   },
 
   run(options) {
-    logger.info('================================');
-    logger.info('>>> Express REST file server <<<');
-    logger.info('================================');
+    info('================================');
+    info('>>> Express REST file server <<<');
+    info('================================');
     const server = this.init(options);
     server.listen(options.port, () => {
-      logger.info('Listening on', options.port);
+      info('Listening on', options.port);
     });
   },
 };
+
