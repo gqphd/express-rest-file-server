@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https:git@github.com:bitIO/express-rest-file-server.git"
+    "url": "https://github.com/bitIO/express-rest-file-server.git"
   },
   "bugs": {
     "url": "https://github.com/bitIO/express-rest-file-server/issues"
@@ -31,7 +31,8 @@
     "start": "node index.js",
     "start:disk": "node index.js --storageType=disk",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -45,7 +46,8 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
     "pkg-ok": "^2.2.0",
-    "semantic-release": "^15.3.1"
+    "semantic-release": "^15.3.1",
+    "travis-deploy-once": "^5.0.0"
   },
   "eslintConfig": {
     "extends": "airbnb-base",
