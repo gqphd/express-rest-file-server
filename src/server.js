@@ -4,7 +4,7 @@ import cors from 'cors';
 import multer, { diskStorage, memoryStorage } from 'multer';
 import { urlencoded, json } from 'body-parser';
 import { writeFile, getFileSize, readFile, removeFile, writeFileChunk, assembleFileChunks } from './file-service';
-import { verbose, info, error } from '../log';
+import { verbose, info, error } from './log';
 
 /* eslint-disable no-underscore-dangle */
 const saveFile = (request, response, filename) => {
