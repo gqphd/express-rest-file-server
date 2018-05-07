@@ -24,13 +24,16 @@
   "engines": {
     "node": ">=6"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
   "bin": "./bin/index.js",
   "scripts": {
+    "build": "babel --copy-files --out-dir lib --ignore *.test.js src",
     "commit": "git-cz",
+    "prebuild": "rimraf lib",
     "prepublishOnly": "pkg-ok",
-    "start": "node index.js",
-    "start:disk": "node index.js --storageType=disk",
+    "start": "babel-node src/index.js",
+    "start:disk": "babel-node src/index.js --storageType=disk",
+    "start:prod": "node lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 0",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
@@ -44,14 +47,20 @@
     "winston": "^2.4.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
     "pkg-ok": "^2.2.0",
+    "rimraf": "^2.6.2",
     "semantic-release": "^15.3.1",
     "travis-deploy-once": "^5.0.0"
+  },
+  "babel": {
+    "plugins": [],
+    "presets": "env"
   },
   "eslintConfig": {
     "extends": "airbnb-base",
