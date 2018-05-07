@@ -1,4 +1,5 @@
 const fs = require('fs');
+const logger = require('../log');
 
 const files = {};
 
@@ -19,7 +20,7 @@ const remove = (filename) => {
     fs.unlinkSync(file.filepath);
   }
   delete files[filename];
-  console.log('🙋🏻‍  File removed', filename);
+  logger.debug('File removed', filename);
 };
 const write = (filename, buffer, filesize, filepath) => {
   files[filename] = {
@@ -28,59 +29,59 @@ const write = (filename, buffer, filesize, filepath) => {
     filepath,
     size: (buffer ? buffer.length : filesize),
   };
-  console.log('🙋🏻‍  File saved', files[filename]);
+  logger.debug('File saved', files[filename]);
 };
 
 const getFileSize = (filename) => {
   if (exists(filename)) {
     const fileSize = size(filename);
-    console.log('Request size of', filename, 'is', fileSize);
+    logger.debug('Request size of', filename, 'is', fileSize);
     return result(200, { fileSize });
   }
-  console.log('Request size of', filename, 'not found');
+  logger.debug('Request size of', filename, 'not found');
   return result(404);
 };
 
 const readFile = (filename) => {
   if (exists(filename)) {
-    console.log('Streaming', filename);
+    logger.debug('Streaming', filename);
     return result(200, read(filename));
   }
-  console.log('Streaming', filename, 'not found');
+  logger.debug('Streaming', filename, 'not found');
   return result(404);
 };
 
 const writeFile = (file) => {
-  console.log('Storing', file.originalname);
+  logger.debug('Storing', file.originalname);
   write(file.originalname, file.buffer, file.size, file.path);
   return result(200);
 };
 const writeFileChunk = (filename, buffer, chunkNumber) => {
-  console.log('Storing', filename, 'chunk', chunkNumber);
+  logger.debug('Storing', filename, 'chunk', chunkNumber);
   write(`${filename}.${chunkNumber}.chunk`, buffer);
   return result(200);
 };
 const assembleFileChunks = (filename, requestTotalSize) => {
-  console.log('Assembling', filename, 'total size', requestTotalSize);
+  logger.debug('Assembling', filename, 'total size', requestTotalSize);
   let chunkNumber = 1;
   let totalSize = 0;
   while (true) {
     const chunkName = `${filename}.${chunkNumber}.chunk`;
     if (exists(chunkName)) {
       const fileSize = size(chunkName);
-      console.log('Testing', chunkName, 'with size', fileSize);
+      logger.debug('Testing', chunkName, 'with size', fileSize);
       chunkNumber += 1;
       totalSize += fileSize;
     } else {
-      console.log('Testing', chunkName, 'not found');
+      logger.error('Testing', chunkName, 'not found');
       break;
     }
   }
   if (requestTotalSize !== totalSize) {
-    console.log('Request total size', requestTotalSize, 'not equal to calculated total size', totalSize);
+    logger.error('Request total size', requestTotalSize, 'not equal to calculated total size', totalSize);
     return result(412);
   }
-  console.log('Request total size', requestTotalSize, 'equal to calculated total size', totalSize);
+  logger.debug('Request total size', requestTotalSize, 'equal to calculated total size', totalSize);
   let buffer = null;
   chunkNumber = 1;
   while (true) {
@@ -98,11 +99,11 @@ const assembleFileChunks = (filename, requestTotalSize) => {
 
 const removeFile = (filename) => {
   if (exists(filename)) {
-    console.log('🔥  Removing file', filename);
+    logger.debug('Removing file', filename);
     remove(filename);
     return result(200);
   }
-  console.log('Removing', filename, 'not found');
+  logger.error('Removing', filename, 'not found');
   return result(404);
 };
 
