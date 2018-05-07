@@ -4,11 +4,11 @@ import cors from 'cors';
 import multer, { diskStorage, memoryStorage } from 'multer';
 import { urlencoded, json } from 'body-parser';
 import { writeFile, getFileSize, readFile, removeFile, writeFileChunk, assembleFileChunks } from './file-service';
-import { verbose, info, error } from './log';
+import logger from './log';
 
 /* eslint-disable no-underscore-dangle */
 const saveFile = (request, response, filename) => {
-  verbose('Saving file', request.file, filename);
+  logger.verbose('Saving file', request.file, filename);
   const result = writeFile(request.file);
   if (request.query._postmessage) {
     if (request.query._postmessageid) {
@@ -28,10 +28,10 @@ export default {
   init(options) {
     let storage;
     if (options.storage.type === 'disk') {
-      info('Using disk storage', (options.storage.path || '/tmp'));
+      logger.info('Using disk storage', (options.storage.path || '/tmp'));
 
       if (options.storage.path && !existsSync(options.storage.pathh)) {
-        error(options.storage.path, 'does not exist');
+        logger.error(options.storage.path, 'does not exist');
         throw new Error(`${options.storage.path} does not exist`);
       }
 
@@ -44,7 +44,7 @@ export default {
         },
       });
     } else {
-      info('Using memory storage');
+      logger.info('Using memory storage');
       storage = memoryStorage();
     }
     const upload = multer({ storage });
@@ -99,12 +99,12 @@ export default {
   },
 
   run(options) {
-    info('================================');
-    info('>>> Express REST file server <<<');
-    info('================================');
+    logger.info('================================');
+    logger.info('>>> Express REST file server <<<');
+    logger.info('================================');
     const server = this.init(options);
     server.listen(options.port, () => {
-      info('Listening on', options.port);
+      logger.info('Listening on', options.port);
     });
   },
 };

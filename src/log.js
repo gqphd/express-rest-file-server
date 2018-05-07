@@ -1,9 +1,9 @@
-const winston = require('winston');
+import winston, { Logger, transports as _transports } from 'winston';
 
 const { config } = winston;
-const logger = new (winston.Logger)({
+const logger = new (Logger)({
   transports: [
-    new (winston.transports.Console)({
+    new (_transports.Console)({
       timestamp() {
         return Date.now();
       },
@@ -19,4 +19,4 @@ const logger = new (winston.Logger)({
   ],
 });
 
-module.exports = logger;
+export default logger;
