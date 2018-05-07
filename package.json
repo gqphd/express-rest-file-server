@@ -1,6 +1,6 @@
 {
   "name": "express-rest-file-server",
-  "version": "1.0.3",
+  "version": "0.0.0-development",
   "description": "CRUD operations with files storing in-memory or disk",
   "keywords": [
     "node",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:bitIO/express-rest-file-server.git"
+    "url": "https:git@github.com:bitIO/express-rest-file-server.git"
   },
   "bugs": {
     "url": "https://github.com/bitIO/express-rest-file-server/issues"
@@ -30,7 +30,8 @@
     "prepublishOnly": "pkg-ok",
     "start": "node index.js",
     "start:disk": "node index.js --storageType=disk",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -43,7 +44,8 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
-    "pkg-ok": "^2.2.0"
+    "pkg-ok": "^2.2.0",
+    "semantic-release": "^15.3.1"
   },
   "eslintConfig": {
     "extends": "airbnb-base",
