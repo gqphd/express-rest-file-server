@@ -1,5 +1,6 @@
 # express-rest-file-server
-![travis-ci](https://travis-ci.org/bitIO/express-rest-file-server.svg?branch=master)
+[![travis-ci](https://travis-ci.org/bitIO/express-rest-file-server.svg?branch=master)](https://travis-ci.org/bitIO/express-rest-file-server)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 An express based application, inspired by [mock-file-server](https://github.com/betajs/mock-file-server), to be used as a CRUD file server storing content in the memory (temporal) or in the disk (permanent) of the server.
 
