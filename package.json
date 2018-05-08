@@ -31,7 +31,7 @@
     "commit": "git-cz",
     "prebuild": "rimraf lib",
     "prepublishOnly": "pkg-ok",
-    "start": "babel-node src/index.js",
+    "start": "babel-node src/index.js -v",
     "start:disk": "babel-node src/index.js --storageType=disk",
     "start:prod": "node lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 0",

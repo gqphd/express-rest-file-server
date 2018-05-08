@@ -29,7 +29,7 @@ export default {
   init(options) {
     let storage;
     if (options.storage.type === 'disk') {
-      if (options.storage.path && !existsSync(options.storage.pathh)) {
+      if (options.storage.path && !existsSync(options.storage.path)) {
         logger.error(options.storage.path, 'does not exist');
         throw new Error(`${options.storage.path} does not exist`);
       }
@@ -43,7 +43,6 @@ export default {
         },
       });
     } else {
-      logger.info('Using memory storage');
       storage = memoryStorage();
     }
     const upload = multer({ storage });
@@ -98,12 +97,16 @@ export default {
   },
 
   run(options) {
-    logger.info('================================');
-    logger.info('>>> Express REST file server <<<');
-    logger.info('================================');
     const server = this.init(options);
     server.listen(options.port, () => {
-      logger.info('Listening on', options.port);
+      logger.info('Server ready. Configuration:');
+      logger.info(
+        '  * Storage: %s %s', options.storage.type,
+        ((options.storage.type === 'disk' && options.storage.path) || '')
+      );
+      logger.info('  * Port:', options.port);
+      logger.info('  * Routes:', `/${options.route}`);
+      logger.info('  * Verbose:', options.verbose ? 'yes' : 'no');
     });
   },
 };
