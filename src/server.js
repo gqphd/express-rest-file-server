@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import multer, { diskStorage, memoryStorage } from 'multer';
 import { urlencoded, json } from 'body-parser';
+
 import { writeFile, getFileSize, readFile, removeFile, writeFileChunk, assembleFileChunks } from './file-service';
 import logger from './log';
 
@@ -28,8 +29,6 @@ export default {
   init(options) {
     let storage;
     if (options.storage.type === 'disk') {
-      logger.info('Using disk storage', (options.storage.path || '/tmp'));
-
       if (options.storage.path && !existsSync(options.storage.pathh)) {
         logger.error(options.storage.path, 'does not exist');
         throw new Error(`${options.storage.path} does not exist`);
@@ -56,29 +55,29 @@ export default {
     app.use(json());
     app.use(cors());
 
-    app.get('/files/:filename/size', (request, response) => {
+    app.get(`/${options.route}/:filename/size`, (request, response) => {
       const result = getFileSize(request.params.filename);
       response.status(result.status).send(result.data);
     });
 
-    app.get('/files/:filename', (request, response) => {
+    app.get(`/${options.route}/:filename`, (request, response) => {
       const result = readFile(request.params.filename);
       response.status(result.status).send(result.data);
     });
-    app.delete('/files/:filename', (request, response) => {
+    app.delete(`/${options.route}/:filename`, (request, response) => {
       const result = removeFile(request.params.filename);
       response.status(result.status);
     });
 
-    app.post('/files', upload.single('file'), (request, response) => {
+    app.post(`/${options.route}`, upload.single('file'), (request, response) => {
       saveFile(request, response, request.file.originalname);
     });
 
-    app.post('/files/:filename', upload.single('file'), (request, response) => {
+    app.post(`/${options.route}/:filename`, upload.single('file'), (request, response) => {
       saveFile(request, response, request.params.filename);
     });
 
-    app.post('/chunk/:filename', upload.single('file'), (request, response) => {
+    app.post(`/${options.route}/chunk/:filename`, upload.single('file'), (request, response) => {
       const result = writeFileChunk(
         request.params.filename,
         request.file.buffer,
@@ -87,7 +86,7 @@ export default {
       response.status(result.status).send(result.data);
     });
 
-    app.post('/assemble/:filename', (request, response) => {
+    app.post(`/${options.route}/assemble/:filename`, (request, response) => {
       const result = assembleFileChunks(
         request.params.filename,
         request.body[options.totalSize || 'totalsize']
