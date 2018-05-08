@@ -33,3 +33,32 @@ npx express-rest-file-server
 * storageType: can be `memory` or `disk` (defaults to memory)
 * storagePath: where to store the files if storage is set to `disk` (defaults to `/tmp`)
 
+## Routes
+
+### POST /files
+
+Uploads a file to the store with its original name
+
+### POST /files/:filename
+
+Uploads a file to the store with a custom name (:filename)
+
+### POST /files/chunk/:filename
+
+Uploads a chuck of a file to the store with a custom name (:filename)
+
+### POST /files/assemble/:filename
+
+_Builds_ a file from its chunks
+
+### GET /files/:filename
+
+Retrieve a file by its name
+
+### GET /files/:filename/size
+
+Retrieve a file size by its name
+
+### DELETE /files/:filename
+
+Remove a file by its name
