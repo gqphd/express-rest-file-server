@@ -8,6 +8,8 @@
 
 An express based application, inspired by [mock-file-server](https://github.com/betajs/mock-file-server), to be used as a CRUD file server storing content in the memory (temporal) or in the disk (permanent) of the server.
 
+I added file listing feature.
+
 ## Usage
 You can either install it globally o locally to your project
 
