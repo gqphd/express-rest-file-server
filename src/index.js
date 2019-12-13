@@ -29,7 +29,7 @@ server.run({
   totalSize: opt.totalsize,
   storage: {
     type: (opt.storageType || 'memory'),
-    path: (opt.storageType === 'disk' && opt.storagePath ? opt.storagePath : '/tmp'),
+    path: (opt.storageType === 'disk' && opt.storagePath ? opt.storagePath : './tmp'),
   },
   route: (opt.route || 'files'),
   verbose: (!!opt.verbose),

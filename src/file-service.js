@@ -1,4 +1,4 @@
-import { readFileSync, unlinkSync } from 'fs';
+import { readFileSync, unlinkSync, readdirSync } from 'fs';
 import logger from './log';
 
 const files = {};
@@ -14,6 +14,9 @@ const read = filename => (
   files[filename].buffer ||
   readFileSync(files[filename].filepath)
 );
+const listfile = ()=>{
+    readdir
+}
 const remove = (filename) => {
   const file = files[filename];
   if (file.filepath) {
@@ -49,6 +52,13 @@ export const readFile = (filename) => {
   }
   logger.debug('Streaming', filename, 'not found');
   return result(404);
+};
+
+//gq
+export const listFiles = (folderpath) => {
+    console.log("folderpath : "+folderpath);
+    var fileslist = readdirSync(folderpath);
+    return result(200, JSON.stringify(fileslist));
 };
 
 export const writeFile = (file) => {

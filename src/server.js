@@ -4,7 +4,7 @@ import cors from 'cors';
 import multer, { diskStorage, memoryStorage } from 'multer';
 import { urlencoded, json } from 'body-parser';
 
-import { writeFile, getFileSize, readFile, removeFile, writeFileChunk, assembleFileChunks } from './file-service';
+import { writeFile, getFileSize, readFile, removeFile, writeFileChunk, assembleFileChunks, listFiles } from './file-service';
 import logger from './log';
 
 /* eslint-disable no-underscore-dangle */
@@ -66,6 +66,14 @@ export default {
     app.delete(`/${options.route}/:filename`, (request, response) => {
       const result = removeFile(request.params.filename);
       response.status(result.status);
+    });
+      
+    //gq
+    app.get(`/${options.route}`, upload.single('file'), (request, response) => {
+        //this is disk-only operation
+      const result = listFiles(options.storage.path);
+      //response.send("hell yeah");
+        response.status(result.status).send(result.data);
     });
 
     app.post(`/${options.route}`, upload.single('file'), (request, response) => {

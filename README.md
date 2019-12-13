@@ -27,6 +27,11 @@ express-rest-file-server
 npx express-rest-file-server
 ```
 
+gq example
+```
+npx babel-node src/index.js --storageType=disk --storagePath=D:\\Tmp
+```
+
 ### Options
 
 * port: defaults to 5000
@@ -50,6 +55,10 @@ Uploads a chuck of a file to the store with a custom name (:filename)
 ### POST /files/assemble/:filename
 
 _Builds_ a file from its chunks
+
+### GET /files/
+
+(new)Retrieve a file list
 
 ### GET /files/:filename
 

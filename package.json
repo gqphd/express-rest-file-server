@@ -33,6 +33,7 @@
     "prepublishOnly": "pkg-ok",
     "start": "babel-node src/index.js -v",
     "start:disk": "babel-node src/index.js --storageType=disk",
+    "start:disk_gq": "babel-node src/index.js --storageType=disk --storagePath=D:\\Tmp",
     "start:prod": "node lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 0",
     "semantic-release": "semantic-release",
